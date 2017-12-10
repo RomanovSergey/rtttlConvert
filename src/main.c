@@ -115,7 +115,7 @@ int main()
 
 	fprintf( fd, "/* converted rtttl melody to convenient for cpu image */\n\n" );
 	fprintf( fd, "typedef struct {\n" );
-	fprintf( fd, "    uint16_t freq;\n" );
+	fprintf( fd, "    uint16_t period;\n" );
 	fprintf( fd, "    uint16_t delay;\n" );
 	fprintf( fd, "} rtttl_img;\n\n" );
 
@@ -132,7 +132,7 @@ int main()
 			fprintf( fd, "%c", *song );
 			song++;
 		}
-		fputs( "[] = { \n\t", fd );
+		fputs( "[] = {\n\t", fd );
 
 		song++;                       // Пропустить символ ':'
 		while ( *song != ':' )            // Повторять до символа ':'
@@ -261,7 +261,7 @@ int main()
 			}
 			fprintf( fd, "%4d},", calc_duration );
 			num++;
-			if ( num > 4 ) {
+			if ( num > 6 ) {
 				num = 0;
 				fprintf( fd, "\n\t" );
 			}
