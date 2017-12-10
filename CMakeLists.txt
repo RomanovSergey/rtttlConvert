@@ -1,16 +1,15 @@
 
-cmake_minimum_required ( VERSION 2.6 )
+cmake_minimum_required(VERSION 2.8)
 
-# project ( rtttlConvert C )
+project(rtttlConvert)
 
-# include_directories ( src )
-# add_subdirectory ( src )
+add_definitions(-Wall -g)
 
-# file( GLOB SOURCES src/*.c )
+include_directories(src)
 
-# SET_TARGET_PROPERTIES ( ${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE C )
+aux_source_directory(./src SRC_FILES)
 
-# add_executable( rtttlConvert tutorial.cxx )
-# add_executable( ${PROJECT_NAME} src )
+add_executable(${PROJECT_NAME} ${SRC_FILES})
 
-add_executable( rtttlConvert src/main.c )
+# target_link_libraries(${PROJECT_NAME} udev)
+
