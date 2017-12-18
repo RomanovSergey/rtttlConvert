@@ -126,7 +126,12 @@ int main()
 	fprintf( fd, "typedef struct {\n" );
 	fprintf( fd, "    uint16_t period;\n" );
 	fprintf( fd, "    uint16_t delay;\n" );
-	fprintf( fd, "} rtttl_img;\n\n" );
+	fprintf( fd, "} melody_t;\n\n" );
+
+	fprintf( fd, "typedef struct {\n" );
+	fprintf( fd, "    char*     name;\n" );
+	fprintf( fd, "    melody_t  mel[];\n" );
+	fprintf( fd, "} srec_t;\n\n" );
 
 	while ( rtttl_library[ melody ] != NULL ) {
 		duration = 4; // Длительность звучания = 4/4 = 1
@@ -135,7 +140,7 @@ int main()
 
 		num = 0;
 		song = rtttl_library[melody];
-		fprintf( fd, "rtttl_img r_" );
+		fprintf( fd, "srec_t r_" );
 
 		struct list* item = calloc( 1, sizeof( struct list ) );
 		if ( item == NULL ) {
@@ -157,7 +162,7 @@ int main()
 			fprintf( fd, "%c", *song );
 			song++;
 		}
-		fputs( "[] = {\n  ", fd );
+		fprintf( fd, " = { .name = \"%s\", .mel = {\n  ", tail->name );
 
 		song++;                       // Пропустить символ ':'
 		while ( *song != ':' )            // Повторять до символа ':'
@@ -297,17 +302,17 @@ int main()
 			num = 0;
 			fprintf( fd, "\n  " );
 		}
-		fprintf( fd, "{%4u,%4u}", 0, 0 );
-		fprintf( fd, "\n};\n" );
+		fprintf( fd, "{%4u,%4u}}\n", 0, 0 );
+		fprintf( fd, "};\n" );
 		melody++;
 	} // while ( rtttl_library[ melody ] != NULL )
 
-	fprintf( fd, "rtttl_img *playlist[] = {\n" );
+	fprintf( fd, "srec_t *collect[] = {\n" );
 	{
 		int i = 0;
 		struct list *it;
 		for ( it = head; it != NULL; it = it->next ) {
-			fprintf( fd, "  r_%s, // %d\n", it->name, i++ );
+			fprintf( fd, "  &r_%s, // %d\n", it->name, i++ );
 		}
 	}
 	fprintf( fd, "};\n" );
